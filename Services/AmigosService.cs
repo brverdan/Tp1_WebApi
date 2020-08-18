@@ -17,9 +17,14 @@ namespace Services
             _context = context;
         }
 
-        public async Task<List<Amigos>> FindAllAsync()
+        public List<Amigos> FindAll()
         {
-            return await _context.Amigo.ToListAsync();
+            return _context.Amigo.ToList();
+        }
+
+        public Amigos FindAllById(int id)
+        {
+            return  _context.Amigo.FirstOrDefault(x => x.Id == id);
         }
     }
 }

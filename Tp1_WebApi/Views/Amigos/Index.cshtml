@@ -4,8 +4,36 @@
     ViewData["Title"] = "Index";
 }
 
+@section Scripts {
+    <script>
+        var ids = [];
+        $(document).ready(function () {
+            $("input[type='checkbox']").each(function (i, e) {
+                if ($(e).is(":checked")) {
+                    ids.push($(this).attr("id"));
+                }
+            });
+            $("input[type='checkbox']").bind("click", function () {
+                if ($(this).is(":checked")) {
+                    ids.push($(this).attr("id"));
+                } else {
+                    var id = $(this).attr("id");
+                    ids = ids.filter(function (elem) {
+                        return elem != id;
+                    });
+                }
+            });
+            $("#lnkNavAmigos").click(function () {
+                location.href = "/Amigos/AmigosEmail?ids=" + ids.join(",");
+            });
+        });
+    </script>
+
+}
 <h1>@ViewData["Title"]</h1>
 
+
+<a href="#" id="lnkNavAmigos">Ver amigos pelo email</a>
 <table class="table">
     <thead>
         <tr>
@@ -27,7 +55,31 @@
         {
             <tr>
                 <td>
-                    <input type="checkbox" id="ChekBox"  />
+                    @{
+                        var marcarCheckbox = false;
+
+                        if (ViewBag.IdsSelecionados != null)
+                        {
+                            foreach (var id in ViewBag.IdsSelecionados)
+                            {
+                                if (item.Id.ToString() == id)
+                                {
+                                    marcarCheckbox = true;
+                                }
+
+                            }
+                        }
+
+                    }
+
+                    @if (marcarCheckbox)
+                    {
+                        <input type="checkbox" id="@item.Id" checked />
+                    }
+                    else
+                    {
+                        <input type="checkbox" id="@item.Id" />
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Nome)

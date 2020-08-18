@@ -33,6 +33,7 @@ namespace Tp1_WebApi
                 opt.UseSqlServer(Configuration.GetConnectionString("AmigosDatabase"));
             });
 
+            services.AddSession();
             services.AddScoped<AmigosSeeding>();
             services.AddScoped<AmigosService>();
         }
@@ -54,6 +55,8 @@ namespace Tp1_WebApi
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthorization();
